@@ -93,3 +93,51 @@ Because software emulation handles discharge authority and telemetry negotiation
 
 * **Pull-up Resistors:** Not required on the breadboard/wiring. The motherboard has onboard $2.2\,\text{k}\Omega$ pull-ups to +3.3V on SCL and SDA.
 * **Pico Power Supply:** Powered via a small buck converter stepping down pack voltage to 5V (into the Pico's `VSYS` pin), or powered directly from the motherboard's `+3.3V_ALW` rail.
+
+---
+
+## 5. Flashing the Pico with Arduino IDE
+
+Follow these steps if you have never used a Raspberry Pi Pico or the Arduino IDE before.
+
+#### 1. Install Arduino IDE
+* Download and install the latest **Arduino IDE (2.x)** from [arduino.cc](https://www.arduino.cc/en/software).
+
+#### 2. Install the RP2040 Board Core
+The default Arduino installation does not include the Pico. You must install the **Earle Philhower RP2040 Core**:
+1. Open Arduino IDE.
+2. Go to **File $\to$ Preferences** (or `Cmd + ,` on macOS).
+3. In the field labeled **Additional Boards Manager URLs**, paste this URL:
+   ```text
+   https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+   ```
+4. Click **OK**.
+5. Open the Boards Manager by clicking the board icon on the left sidebar (or go to **Tools $\to$ Board $\to$ Boards Manager...**).
+6. Search for `RP2040` and install **"Raspberry Pi Pico/RP2040 by Earle F. Philhower, III"**.
+
+#### 3. Open the Project
+1. In Arduino IDE, go to **File $\to$ New Sketch**.
+2. Copy the contents of [`main.cpp`](./main.cpp) and paste them into the editor, replacing any default code.
+3. Save the file (e.g., as `DellBatteryEmulator.ino`).
+
+#### 4. Configure Board Settings
+Go to the **Tools** menu and ensure the following options are selected:
+* **Board:** $\to$ `Raspberry Pi RP2040 Boards` $\to$ `Raspberry Pi Pico`
+* **CPU Speed:** `133 MHz` (Default)
+* **USB Stack:** `Pico SDK`
+
+#### 5. Put the Pico into Bootloader Mode & Upload
+1. Unplug the Pico from your computer.
+2. Hold down the white **`BOOTSEL`** button on the Pico board.
+3. While still holding the button, plug the USB cable into your computer.
+4. Release the **`BOOTSEL`** button. The Pico will appear as a removable drive named `RPI-RP2` on your computer.
+5. In Arduino IDE, click the **Upload** button (the arrow icon in the top left).
+
+> **Note on First Upload:** You do **not** need to select a COM/Serial port for the very first upload. The IDE will automatically detect the `RPI-RP2` drive and flash the firmware.
+
+Once flashed, the onboard LED on the Pico will begin blinking at **1 Hz** (once per second) to indicate that the emulator is running and waiting for SMBus traffic from the laptop.
+
+
+## 6. License
+
+This project is licensed under the [MIT License](LICENSE) - feel free to adapt and build upon it.
